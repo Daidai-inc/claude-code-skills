@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daidai Skills — Claude Code Skills Marketplace</title>
+  <meta name="description" content="16 production-tested Claude Code skills. Free to use. Battle-tested on international sports events, iOS apps, and automated content pipelines." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --orange: #f97316;
+      --orange-dark: #ea580c;
+      --bg: #0f0f0f;
+      --bg2: #1a1a1a;
+      --bg3: #252525;
+      --border: #2e2e2e;
+      --text: #e5e5e5;
+      --muted: #888;
+      --radius: 12px;
+    }
+    body { font-family: 'Inter', 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+    /* NAV */
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 20px 40px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--bg); z-index: 100; }
+    .logo { font-size: 20px; font-weight: 800; color: var(--orange); letter-spacing: -0.5px; }
+    .nav-links { display: flex; gap: 24px; align-items: center; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 14px; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
+    .btn { padding: 8px 18px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s; }
+    .btn-primary { background: var(--orange); color: white; }
+    .btn-primary:hover { background: var(--orange-dark); }
+    .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .btn-outline:hover { border-color: var(--orange); color: var(--orange); }
+
+    /* HERO */
+    .hero { text-align: center; padding: 100px 40px 80px; max-width: 800px; margin: 0 auto; }
+    .badge { display: inline-block; background: rgba(249,115,22,0.15); color: var(--orange); border: 1px solid rgba(249,115,22,0.3); border-radius: 100px; padding: 4px 14px; font-size: 12px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 24px; }
+    h1 { font-size: clamp(36px, 6vw, 64px); font-weight: 800; line-height: 1.1; letter-spacing: -2px; margin-bottom: 20px; }
+    h1 span { color: var(--orange); }
+    .hero p { font-size: 18px; color: var(--muted); max-width: 560px; margin: 0 auto 36px; }
+    .hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .install-box { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 24px; margin-top: 48px; text-align: left; font-family: 'Courier New', monospace; font-size: 14px; color: #aaa; position: relative; }
+    .install-box .comment { color: #555; }
+    .install-box .cmd { color: var(--orange); }
+
+    /* STATS */
+    .stats { display: flex; justify-content: center; gap: 60px; padding: 40px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+    .stat { text-align: center; }
+    .stat-num { font-size: 36px; font-weight: 800; color: var(--orange); }
+    .stat-label { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+    /* CATEGORIES */
+    .section { max-width: 1100px; margin: 0 auto; padding: 80px 40px; }
+    .section-title { font-size: 28px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.5px; }
+    .section-sub { color: var(--muted); margin-bottom: 40px; }
+
+    .categories { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 40px; }
+    .cat-pill { padding: 6px 16px; border-radius: 100px; border: 1px solid var(--border); font-size: 13px; color: var(--muted); cursor: pointer; transition: all 0.2s; background: var(--bg2); }
+    .cat-pill:hover, .cat-pill.active { border-color: var(--orange); color: var(--orange); background: rgba(249,115,22,0.08); }
+
+    /* SKILL GRID */
+    .skill-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+    .skill-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; transition: all 0.2s; text-decoration: none; color: inherit; display: block; }
+    .skill-card:hover { border-color: var(--orange); transform: translateY(-2px); }
+    .card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
+    .skill-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+    .skill-name { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+    .skill-cat { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+    .skill-desc { font-size: 14px; color: var(--muted); margin-bottom: 16px; line-height: 1.5; }
+    .skill-trigger { background: var(--bg3); border-radius: 6px; padding: 8px 12px; font-size: 12px; color: #777; font-family: monospace; }
+    .free-badge { background: rgba(34,197,94,0.15); color: #22c55e; border-radius: 6px; padding: 2px 8px; font-size: 11px; font-weight: 600; }
+
+    /* FEATURES */
+    .features { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px; margin-top: 48px; }
+    .feature { padding: 28px; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); }
+    .feature-icon { font-size: 28px; margin-bottom: 16px; }
+    .feature h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .feature p { font-size: 14px; color: var(--muted); }
+
+    /* FOOTER */
+    footer { border-top: 1px solid var(--border); padding: 40px; text-align: center; color: var(--muted); font-size: 14px; }
+    footer a { color: var(--orange); text-decoration: none; }
+
+    @media (max-width: 600px) {
+      nav { padding: 16px 20px; }
+      .hero { padding: 60px 20px 40px; }
+      .section { padding: 60px 20px; }
+      .stats { gap: 32px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">⚡ Daidai Skills</div>
+  <div class="nav-links">
+    <a href="#skills">Skills</a>
+    <a href="#install">Install</a>
+    <a href="https://github.com/AINAGOC/claude-code-skills" target="_blank">GitHub</a>
+    <a href="https://x.com/daidai_ai" target="_blank" class="btn btn-outline">@daidai_ai</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="badge">Claude Code Skills</div>
+  <h1>Build faster with<br /><span>battle-tested skills</span></h1>
+  <p>16 production-tested Claude Code skills. Free and open source. Add to any project in 30 seconds.</p>
+  <div class="hero-actions">
+    <a href="https://github.com/AINAGOC/claude-code-skills" target="_blank" class="btn btn-primary">⬇ Get Skills Free</a>
+    <a href="#skills" class="btn btn-outline">Browse All →</a>
+  </div>
+  <div class="install-box" id="install">
+    <div class="comment"># Clone and add a skill to your project</div>
+    <div class="cmd">git clone https://github.com/AINAGOC/claude-code-skills.git</div>
+    <div class="cmd">cp -r claude-code-skills/skills/diagram .claude/skills/</div>
+  </div>
+</section>
+
+<div class="stats">
+  <div class="stat"><div class="stat-num">16</div><div class="stat-label">Skills Available</div></div>
+  <div class="stat"><div class="stat-num">5</div><div class="stat-label">Categories</div></div>
+  <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Free & Open Source</div></div>
+  <div class="stat"><div class="stat-num">9K+</div><div class="stat-label">Users in Production</div></div>
+</div>
+
+<section class="section" id="skills">
+  <h2 class="section-title">All Skills</h2>
+  <p class="section-sub">Every skill is quality-gated, bilingual (JA/EN), and composable.</p>
+
+  <div class="categories">
+    <div class="cat-pill active">All (16)</div>
+    <div class="cat-pill">Design (2)</div>
+    <div class="cat-pill">Dev & Quality (5)</div>
+    <div class="cat-pill">Strategy (4)</div>
+    <div class="cat-pill">AI & Agents (4)</div>
+    <div class="cat-pill">Security (1)</div>
+  </div>
+
+  <div class="skill-grid">
+
+    <!-- Design -->
+    <a class="skill-card" href="skills/diagram/SKILL.md">
+      <div class="card-top">
+        <div>
+          <div class="skill-name">diagram</div>
+          <div class="skill-cat">Design</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="free-badge">FREE</span>
+          <div class="skill-icon" style="background:rgba(249,115,22,0.15)">🎨</div>
+        </div>
+      </div>
+      <div class="skill-desc">Generate diagrams as HTML+Tailwind CSS → PNG. SNS, slides, blog — all sizes.</div>
+      <div class="skill-trigger">"図解して" / "create a diagram"</div>
+    </a>
+
+    <a class="skill-card" href="skills/frontend-slides/SKILL.md">
+      <div class="card-top">
+        <div>
+          <div class="skill-name">frontend-slides</div>
+          <div class="skill-cat">Design</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="free-badge">FREE</span>
+          <div class="skill-icon" style="background:rgba(168,85,247,0.15)">📊</div>
+        </div>
+      </div>
+      <div class="skill-desc">Create animation-rich HTML presentations from scratch or convert from PowerPoint.</div>
+      <div class="skill-trigger">"スライド作って" / "create slides"</div>
+    </a>
+
+    <!-- Dev & Quality -->
+    <a class="skill-card" href="skills/verify-loop/SKILL.md">
+      <div class="card-top">
+        <div>
+          <div class="skill-name">verify-loop</div>
+          <div class="skill-cat">Dev & Quality</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="free-badge">FREE</span>
+          <div class="skill-icon" style="background:rgba(34,197,94,0.15)">✅</div>
+        </div>
+      </div>
+      <div class="skill-desc">Forced verification gate after code changes. Runs tests, checks exit codes — no skipping allowed.</div>
+      <div class="skill-trigger">"検証して" / "verify this works"</div>
+    </a>
+
+    <a class="skill-card" href="skills/investigate/SKILL.md">
+      <div class="card-top">
+        <div>
+          <div class="skill-name">investigate</div>
+          <div class="skill-cat">Dev & Quality</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="free-badge">FREE</span>
+          <div class="skill-icon" style="background:rgba(59,130,246,0.15)">🔍</div>
+        </div>
+      </div>
+      <div class="skill-desc">Systematic debugging and root cause analysis. Reads logs, traces errors, identifies root cause.</div>
+      <div class="skill-trigger">"バグ調査" / "investigate this bug"</div>
+    </a>
+
+    <a class="skill-card" href="skills/careful/SKILL.md">
+      <div class="card-top">
+        <div>
+          <div class="skill-name">careful</div>
+          <div class="skill-cat">Dev & Quality</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="free-badge">FREE</span>
+          <div class="skill-icon" style="background:rgba(234,179,8,0.15)">⚠️</div>
+        </div>
+      </div>
+      <div class="skill-desc">Safe mode for production operations. Always confirms before destructive actions.</div>
+      <div class="skill-trigger">"本番操作" / "be careful here"</div>
+    </a>
+
+    <a class="skill-card" href="skills/python-development/SKILL.md">
+      <div class="card-top">
+        <div>
+          <div class="skill-name">python-development</div>
+          <div class="skill-cat">Dev & Quality</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="free-badge">FREE</span>
+          <div class="skill-icon" style="background:rgba(59,130,246,0.15)">🐍</div>
+        </div>
+      </div>
+      <div class="skill-desc">Modern Python 3.12+ with Django/FastAPI, async patterns, and production standards.</div>
+      <div class="skill-trigger">Python project context</div>
+    </a>
+
+    <a class="skill-card" href="skills/computer-use/SKILL.md">
+      <div class="card-top">
+        <div>
+          <div class="skill-name">computer-use</div>
+          <div class="skill-cat">Dev & Quality</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="free-badge">FREE</span>
+          <div class="skill-icon" style="background:rgba(99,102,241,0.15)">🖥️</div>
+        </div>
+      </div>
+      <div class="skill-desc">Browser and GUI automation via Claude Computer Use. For when APIs don't exist.</div>
+      <div class="skill-trigger">"ブラウザ操作" / "automate this"</div>
+    </a>
+
+    <!-- Strategy -->
+    <a class="skill-card" href="skills/plan-ceo-review/SKILL.md">
+      <div class="card-top">
+        <div>
+          <div class="skill-name">plan-ceo-review</div>
+          <div class="skill-cat">Strategy</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="free-badge">FREE</span>
+          <div class="skill-icon" style="background:rgba(249,115,22,0.15)">👔</div>
+        </div>
+      </div>
+      <div class="skill-desc">CEO-perspective decision review. 5-angle analysis with a clear approve/reject verdict.</div>
+      <div class="skill-trigger">"CEOレビュー" / "should we do this?"</div>
+    </a>
+
+    <a class="skill-card" href="skills/plan-eng-review/SKILL.md">
+      <div class="card-top">
+        <div>
+          <div class="skill-name">plan-eng-review</div>
+          <div class="skill-cat">Strategy</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="free-badge">FREE</span>
+          <div class="skill-icon" style="background:rgba(59,130,246,0.15)">⚙️</div>
+        </div>
+      </div>
+      <div class="skill-desc">Engineering design review. Architecture, scalability, security trade-offs.</div>
+      <div class="skill-trigger">"設計レビュー" / "review this design"</div>
+    </a>
+
+    <a class="skill-card" href="skills/office-hours/SKILL.md">
+      <div class="card-top">
+        <div>
+          <div class="skill-name">office-hours</div>
+          <div class="skill-cat">Strategy</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="free-badge">FREE</span>
+          <div class="skill-icon" style="background:rgba(34,197,94,0.15)">💡</div>
+        </div>
+      </div>
+      <div class="skill-desc">Quick idea validation. Brainstorm → find the holes → go/stop decision in minutes.</div>
+      <div class="skill-trigger">"ちょっと相談" / "sanity check this idea"</div>
+    </a>
+
+    <a class="skill-card" href="skills/retro/SKILL.md">
+      <div class="card-top">
+        <div>
+          <div class="skill-name">retro</div>
+          <div class="skill-cat">Strategy</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="free-badge">FREE</span>
+          <div class="skill-icon" style="background:rgba(168,85,247,0.15)">🔄</div>
+        </div>
+      </div>
+      <div class="skill-desc">Weekly retrospective. What worked, what didn't, what to change next week.</div>
+      <div class="skill-trigger">"振り返り" / "weekly retro"</div>
+    </a>
+
+    <!-- AI & Agents -->
+    <a class="skill-card" href="skills/agent-memory/SKILL.md">
+      <div class="card-top">
+        <div>
+          <div class="skill-name">agent-memory</div>
+          <div class="skill-cat">AI & Agents</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="free-badge">FREE</span>
+          <div class="skill-icon" style="background:rgba(249,115,22,0.15)">🧠</div>
+        </div>
+      </div>
+      <div class="skill-desc">Persistent memory across conversations. Save and recall facts, decisions, and preferences.</div>
+      <div class="skill-trigger">"覚えておいて" / "remember this"</div>
+    </a>
+
+    <a class="skill-card" href="skills/daily-schedule/SKILL.md">
+      <div class="card-top">
+        <div>
+          <div class="skill-name">daily-schedule</div>
+          <div class="skill-cat">AI & Agents</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="free-badge">FREE</span>
+          <div class="skill-icon" style="background:rgba(34,197,94,0.15)">📅</div>
+        </div>
+      </div>
+      <div class="skill-desc">15-min time-blocked daily schedule from Google Calendar + task list. Trigger: "good morning".</div>
+      <div class="skill-trigger">"今日の予定" / "good morning"</div>
+    </a>
+
+    <a class="skill-card" href="skills/find-skills/SKILL.md">
+      <div class="card-top">
+        <div>
+          <div class="skill-name">find-skills</div>
+          <div class="skill-cat">AI & Agents</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="free-badge">FREE</span>
+          <div class="skill-icon" style="background:rgba(59,130,246,0.15)">🔎</div>
+        </div>
+      </div>
+      <div class="skill-desc">Discover and install skills for any task. Claude tells you which skill fits and installs it.</div>
+      <div class="skill-trigger">"スキル探して" / "is there a skill for this?"</div>
+    </a>
+
+    <a class="skill-card" href="skills/skill-creator/SKILL.md">
+      <div class="card-top">
+        <div>
+          <div class="skill-name">skill-creator</div>
+          <div class="skill-cat">AI & Agents</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="free-badge">FREE</span>
+          <div class="skill-icon" style="background:rgba(249,115,22,0.15)">🛠️</div>
+        </div>
+      </div>
+      <div class="skill-desc">Interactively create new SKILL.md files from scratch with guided prompts.</div>
+      <div class="skill-trigger">"スキル作って" / "create a new skill"</div>
+    </a>
+
+    <!-- Security -->
+    <a class="skill-card" href="skills/cso/SKILL.md">
+      <div class="card-top">
+        <div>
+          <div class="skill-name">cso</div>
+          <div class="skill-cat">Security</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="free-badge">FREE</span>
+          <div class="skill-icon" style="background:rgba(239,68,68,0.15)">🛡️</div>
+        </div>
+      </div>
+      <div class="skill-desc">Security review using OWASP Top 10 + STRIDE threat modeling. Catches what code review misses.</div>
+      <div class="skill-trigger">"セキュリティ確認" / "check for vulnerabilities"</div>
+    </a>
+
+  </div>
+</section>
+
+<section class="section" style="border-top: 1px solid var(--border);">
+  <h2 class="section-title">Why Daidai Skills?</h2>
+  <p class="section-sub">Not another list of prompts. These are real skills built for real production workloads.</p>
+  <div class="features">
+    <div class="feature">
+      <div class="feature-icon">🏟️</div>
+      <h3>Production-tested</h3>
+      <p>Built for the 2026 Asian Games management system. 9,000+ users. Real stakes.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">✅</div>
+      <h3>Quality-gated</h3>
+      <p>Every skill passes a 3-reviewer Agent Teams review before release. No junk.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🔗</div>
+      <h3>Composable</h3>
+      <p>Skills chain: <code>investigate</code> → <code>verify-loop</code> → <code>careful</code> for safe production fixes.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🌏</div>
+      <h3>Bilingual</h3>
+      <p>Triggers in Japanese and English. Works the way you actually talk to Claude.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Built by <a href="https://daidai-inc.com">Daidai</a> · <a href="https://github.com/AINAGOC/claude-code-skills">GitHub</a> · <a href="https://x.com/daidai_ai">@daidai_ai</a></p>
+  <p style="margin-top: 8px; font-size: 12px;">MIT License · Free forever</p>
+</footer>
+
+</body>
+</html>
